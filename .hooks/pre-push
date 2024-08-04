@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e
+
+npx lint-staged
+npm test -- --run
