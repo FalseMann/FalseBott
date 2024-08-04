@@ -2,6 +2,7 @@ import { Static, Type } from "@sinclair/typebox";
 import { envSchema } from "env-schema";
 
 const schema = Type.Object({
+  BOT_GUILDS: Type.Array(Type.String(), { separator: "," }),
   BOT_MEMORY_LIMIT: Type.Number({ default: 15 }),
   BOT_NAME: Type.String({ default: "FalseBott" }),
   DATADOG_API_KEY: Type.Optional(Type.String()),
@@ -24,6 +25,7 @@ export function loadConfig(env: NodeJS.ProcessEnv) {
 
   return {
     bot: {
+      guilds: config.BOT_GUILDS,
       memoryLimit: config.BOT_MEMORY_LIMIT,
       name: config.BOT_NAME,
     },

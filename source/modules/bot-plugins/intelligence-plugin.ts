@@ -10,6 +10,7 @@ const BOT_ID = "550525406424596482";
 type Dependencies = Pick<Container.Dependencies, "memory" | "openai"> &
   BotPluginDependencies & {
     conversationModel: string;
+    guilds: string[];
     maxOutputTokens: number;
   };
 
@@ -22,6 +23,7 @@ const systemMessage: OpenAI.Chat.Completions.ChatCompletionSystemMessageParam =
 
 export class IntelligencePlugin extends BotPlugin {
   private conversationModel: string;
+  private guilds: string[];
   private maxOutputTokens: number;
   private memory: Memory;
   private openai: OpenAI;
@@ -30,12 +32,17 @@ export class IntelligencePlugin extends BotPlugin {
     super(dependencies);
     this.conversationModel = dependencies.conversationModel;
     this.maxOutputTokens = dependencies.maxOutputTokens;
+    this.guilds = dependencies.guilds;
     this.memory = dependencies.memory;
     this.openai = dependencies.openai;
   }
 
   activate(client: Client) {
     client.on("messageCreate", async (message) => {
+      if (message.guildId && !this.guilds.includes(message.guildId)) {
+        return;
+      }
+
       this.memory.addMessageToChannelMemory(
         message.channel.id,
         userMessage(message),

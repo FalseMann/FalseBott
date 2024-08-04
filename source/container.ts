@@ -34,6 +34,7 @@ export function configureContainer() {
     })),
     intelligencePlugin: asClass(IntelligencePlugin).inject(() => ({
       conversationModel: config.openai.model.conversation,
+      guilds: config.bot.guilds,
       maxOutputTokens: config.openai.maxOutputTokens,
     })),
     memory: asFunction(makeMemory).inject(() => ({
