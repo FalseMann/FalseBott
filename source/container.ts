@@ -40,7 +40,9 @@ export function configureContainer() {
     memory: asFunction(makeMemory).inject(() => ({
       memoryLimit: config.bot.memoryLimit,
     })),
-    messageLoggerPlugin: asClass(MessageLoggerPlugin),
+    messageLoggerPlugin: asClass(MessageLoggerPlugin).inject(() => ({
+      guilds: config.bot.guilds,
+    })),
     logger: asFunction(makeLogger).inject(() => ({
       apiKey: config.datadog.apiKey,
       applicationName: config.datadog.applicationName,
